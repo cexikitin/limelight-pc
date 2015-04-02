@@ -38,12 +38,14 @@ public class StreamFrame extends JFrame {
 	private Cursor noCursor;
 	private Limelight limelight;
 	private JPanel renderingSurface;
+        
+    public boolean mouseCaptured = true;
 
 	/**
 	 * Frees the mouse ie. makes it visible and allowed to move outside the frame.
 	 */
 	public void freeMouse() {
-		mouse.free();
+		mouseCaptured = false;
 		showCursor();
 	}
 
@@ -51,6 +53,7 @@ public class StreamFrame extends JFrame {
 	 * Captures the mouse ie. makes it invisible and not allowed to leave the frame
 	 */
 	public void captureMouse() {
+        mouseCaptured = true;
 		mouse.capture();
 		hideCursor();
 	}

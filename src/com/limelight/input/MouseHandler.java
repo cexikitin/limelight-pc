@@ -27,7 +27,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, MouseWh
 	private StreamFrame parent;
 	private int lastX = 0;
 	private int lastY = 0;
-	private boolean captureMouse = true;
+	
 	
 	private final double mouseThresh = 0.45;
 	
@@ -48,19 +48,12 @@ public class MouseHandler implements MouseListener, MouseMotionListener, MouseWh
 	}
 
 	/**
-	 * Frees the mouse, that is stops capturing events and allows it to move freely
-	 */
-	public void free() {
-		captureMouse = false;
-	}
-
-	/**
 	 * Starts capturing mouse events and limits its motion
 	 */
 	public void capture() {
 		moveMouse((int)parent.getLocationOnScreen().getX() + (size.width/2),
 				(int)parent.getLocationOnScreen().getY() + (size.height/2));
-		captureMouse = true;
+		
 	}
 
 	/**
@@ -69,7 +62,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, MouseWh
 	 * @param e click event used to know that the cursor should now be hidden
 	 */
 	public void mouseClicked(MouseEvent e) {
-		if (captureMouse) {
+		if (parent.mouseCaptured) {
 			parent.hideCursor();
 		}
 	}
@@ -87,7 +80,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, MouseWh
 	 * @param e the event created by the mouse leaving the frame
 	 */
 	public void mouseExited(MouseEvent e) {
-		if (captureMouse) {
+		if (parent.mouseCaptured) {
 			checkBoundaries(e);
 		}
 	}
@@ -115,7 +108,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, MouseWh
 		if (e.isConsumed()) return;
 		e.consume();
 		
-		if (captureMouse) {
+		if (parent.mouseCaptured) {
 			byte mouseButton = getButtonFromEvent(e);
 			
 			if (mouseButton > 0) {
@@ -132,7 +125,11 @@ public class MouseHandler implements MouseListener, MouseMotionListener, MouseWh
 				});
 			}
 		}
+        else{
+        	parent.captureMouse();
+        }
 		
+                
 	}
 
 	/**
@@ -143,7 +140,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, MouseWh
 	public void mouseReleased(MouseEvent e) {
 		if (e.isConsumed()) return;
 		
-		if (captureMouse) {
+		if (parent.mouseCaptured) {
 			byte mouseButton = getButtonFromEvent(e);
 			
 			if (mouseButton > 0) {
@@ -159,7 +156,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, MouseWh
 	 * when a button is held down or not.
 	 */
 	public void mouseDragged(MouseEvent e) {
-		if (captureMouse) {
+		if (parent.mouseCaptured) {
 			mouseMoved(e);
 		}
 	}
@@ -174,7 +171,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, MouseWh
 	public void mouseMoved(MouseEvent e) {
 		if (e.isConsumed()) return;
 		
-		if (captureMouse) {
+		if (parent.mouseCaptured) {
 			Point mouse = e.getLocationOnScreen();
 			int x = (int)mouse.getX();
 			int y = (int)mouse.getY();

@@ -16,7 +16,6 @@ public class KeyboardHandler implements KeyListener {
 
     private static KeyboardTranslator translator;
     private StreamFrame parent;
-    private boolean mouseCaptured = true;
 
     /**
      * Constructs a new keyboard listener that will send key events to the specified connection
@@ -63,12 +62,12 @@ public class KeyboardHandler implements KeyListener {
                 (modifiers & KeyEvent.SHIFT_DOWN_MASK) != 0 &&
                 (modifiers & KeyEvent.ALT_DOWN_MASK) != 0 &&
                 (modifiers & KeyEvent.CTRL_DOWN_MASK) != 0) {
-            if (mouseCaptured) {
+            if (parent.mouseCaptured) {
                 parent.freeMouse();
             } else {
                 parent.captureMouse();
             }
-            mouseCaptured = !mouseCaptured;
+            
             return;
         }
 
