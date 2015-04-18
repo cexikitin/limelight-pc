@@ -20,21 +20,26 @@ public class LibraryHelper {
 	static {
 		needsDependencyExtraction = System.getProperty("os.name").contains("Windows");
 		libraryExtractionFolder = System.getProperty("java.io.tmpdir", ".");
-		
+		System.setProperty("org.lwjgl.librarypath",libraryExtractionFolder);
 		// AVC dependencies
-		if (System.getProperty("os.name").contains("Windows")) {
-			avcDependencies.add("avutil-52");
-			avcDependencies.add("swresample-0");
-			avcDependencies.add("swscale-2");
-			avcDependencies.add("avcodec-55");
-			avcDependencies.add("avformat-55");
-			avcDependencies.add("avfilter-3");
-			avcDependencies.add("postproc-52");
-			avcDependencies.add("pthreadVC2");
+		if (needsDependencyExtraction) {
+			avcDependencies.add("avutil-54");
+			avcDependencies.add("swresample-1");
+			avcDependencies.add("swscale-3");
+			avcDependencies.add("avcodec-56");
+			avcDependencies.add("avformat-56");
+			avcDependencies.add("avfilter-5");
+			avcDependencies.add("postproc-53");
+			avcDependencies.add("libwinpthread-1");
 		}
+		
+		avcDependencies.add("lwjgl");
+		avcDependencies.add("OpenAL32");
 		
 		// The AVC JNI library itself
 		avcDependencies.add("nv_avc_dec");
+		
+		
 	}
 	
 	public static void loadNativeLibrary(String libraryName) {

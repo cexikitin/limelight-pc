@@ -73,6 +73,24 @@ Java_com_limelight_nvstream_av_video_cpu_AvcDecoder_getRgbFrameInt(
 	return ret != 0 ? JNI_TRUE : JNI_FALSE;
 }
 
+// fills the output buffer with an RGB frame
+JNIEXPORT jboolean JNICALL
+Java_com_limelight_nvstream_av_video_cpu_AvcDecoder_getRgbFrameInt(
+    JNIEnv *env, jobject this, // JNI parameters
+    jobject outdata, jint outlen) // Output data
+{
+	jint ret;
+	jint * jni_output_data;
+    
+	jni_output_data = (*env)->GetDirectBufferAddress(env, outdata);
+    
+	ret = nv_avc_get_rgb_frame(jni_output_data, outlen * 4);
+    
+	//(*env)->ReleaseIntArrayElements(env, outdata, jni_output_data, 0);
+    
+	return ret != 0 ? JNI_TRUE : JNI_FALSE;
+}
+
 #ifdef __ANDROID_API__
 // This function sets the rendering target for redraw
 JNIEXPORT jboolean JNICALL

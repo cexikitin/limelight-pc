@@ -38,8 +38,8 @@ public class Limelight implements NvConnectionListener {
 	public static boolean COMMAND_LINE_LAUNCH = false;
 
 	private String host;
-	private StreamFrame streamFrame;
-	private NvConnection conn;
+	//private StreamFrame streamFrame;
+	public NvConnection conn;
 	private boolean connectionTerminating;
 	private static JFrame limeFrame;
 	private GamepadHandler gamepad;
@@ -57,13 +57,13 @@ public class Limelight implements NvConnectionListener {
 	 * Creates a connection to the host and starts up the stream.
 	 */
 	public void startUp(StreamConfiguration streamConfig, Preferences prefs) {
-		streamFrame = new StreamFrame();
-
+		//streamFrame = new StreamFrame();
+		
 		decoderRenderer = PlatformBinding.getVideoDecoderRenderer();
 		
 		conn = new NvConnection(host, prefs.getUniqueId(), this, streamConfig, PlatformBinding.getCryptoProvider());
-		streamFrame.build(this, conn, streamConfig, prefs.getFullscreen());
-		conn.start(PlatformBinding.getDeviceName(), streamFrame,
+		//streamFrame.build(this, conn, streamConfig, prefs.getFullscreen());
+		conn.start(PlatformBinding.getDeviceName(), conn,
 				VideoDecoderRenderer.FLAG_PREFER_QUALITY,
 				PlatformBinding.getAudioRenderer(),
 				decoderRenderer);
@@ -289,7 +289,7 @@ public class Limelight implements NvConnectionListener {
 		}
 
 		// Close the stream frame
-		streamFrame.dispose();
+		//streamFrame.dispose();
 	}
 
 	/**
@@ -298,7 +298,7 @@ public class Limelight implements NvConnectionListener {
 	 */
 	public void stageStarting(Stage stage) {
 		LimeLog.info("Starting "+stage.getName());
-		streamFrame.showSpinner(stage);
+		//streamFrame.showSpinner(stage);
 	}
 
 	/**
@@ -322,7 +322,7 @@ public class Limelight implements NvConnectionListener {
 	 * Callback that the connection has finished loading and is started.
 	 */
 	public void connectionStarted() {
-		streamFrame.hideSpinner();
+		//streamFrame.hideSpinner();
 
 		gamepad = new GamepadHandler(conn);
 		GamepadListener.getInstance().addDeviceListener(gamepad);
@@ -404,7 +404,7 @@ public class Limelight implements NvConnectionListener {
 	 * @param message the message to show the user
 	 */
 	public void displayMessage(String message) {
-		streamFrame.dispose();
+		//streamFrame.dispose();
 		JOptionPane.showMessageDialog(limeFrame, message, "Limelight", JOptionPane.INFORMATION_MESSAGE);
 	}
 
@@ -414,7 +414,7 @@ public class Limelight implements NvConnectionListener {
 	 * @param message the message to show the user
 	 */
 	public void displayError(String title, String message) {
-		streamFrame.dispose();
+		//streamFrame.dispose();
 		JOptionPane.showMessageDialog(limeFrame, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 
